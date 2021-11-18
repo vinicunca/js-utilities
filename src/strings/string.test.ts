@@ -1,12 +1,8 @@
-import {
-  splitByCase,
-  toPascalCase,
-  toKebabCase,
-  toCamelCase,
-  toUpperFirst,
-  toLowerFirst,
-  toSnakeCase,
-} from '.';
+/* eslint-disable no-restricted-syntax */
+
+import * as stringUtils from '.';
+
+const UNDEFINED_INPUT = 'undefined input';
 
 describe('splitByCase', () => {
   const tests: any = {
@@ -20,10 +16,9 @@ describe('splitByCase', () => {
     'ALink': ['A', 'Link'],
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input].join(', ')}`, () => {
-      expect(splitByCase(input)).toMatchObject(tests[input]);
+      expect(stringUtils.splitByCase(input)).toMatchObject(tests[input]);
     });
   }
 });
@@ -37,12 +32,15 @@ describe('pascalCase', () => {
     'foo--bar': 'FooBar',
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input]}`, () => {
-      expect(toPascalCase(input)).toBe(tests[input]);
+      expect(stringUtils.toPascalCase(input)).toBe(tests[input]);
     });
   }
+
+  test(UNDEFINED_INPUT, () => {
+    expect(stringUtils.toPascalCase(undefined)).toBe('');
+  });
 });
 
 describe('camelCase', () => {
@@ -50,12 +48,15 @@ describe('camelCase', () => {
     FooBarBaz: 'fooBarBaz',
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input]}`, () => {
-      expect(toCamelCase(input)).toBe(tests[input]);
+      expect(stringUtils.toCamelCase(input)).toBe(tests[input]);
     });
   }
+
+  test(UNDEFINED_INPUT, () => {
+    expect(stringUtils.toCamelCase(undefined)).toBe('');
+  });
 });
 
 describe('kebabCase', () => {
@@ -68,12 +69,15 @@ describe('kebabCase', () => {
     'ALink': 'a-link',
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input]}`, () => {
-      expect(toKebabCase(input)).toBe(tests[input]);
+      expect(stringUtils.toKebabCase(input)).toBe(tests[input]);
     });
   }
+
+  test(UNDEFINED_INPUT, () => {
+    expect(stringUtils.toKebabCase(undefined)).toBe('');
+  });
 });
 
 describe('snakeCase', () => {
@@ -81,12 +85,15 @@ describe('snakeCase', () => {
     FooBarBaz: 'foo_bar_baz',
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input]}`, () => {
-      expect(toSnakeCase(input)).toBe(tests[input]);
+      expect(stringUtils.toSnakeCase(input)).toBe(tests[input]);
     });
   }
+
+  test(UNDEFINED_INPUT, () => {
+    expect(stringUtils.toSnakeCase(undefined)).toBe('');
+  });
 });
 
 describe('upperFirst', () => {
@@ -96,10 +103,9 @@ describe('upperFirst', () => {
     'Foo': 'Foo',
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input]}`, () => {
-      expect(toUpperFirst(input)).toBe(tests[input]);
+      expect(stringUtils.toUpperFirst(input)).toBe(tests[input]);
     });
   }
 });
@@ -111,10 +117,19 @@ describe('lowerFirst', () => {
     'Foo': 'foo',
   };
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const input in tests) {
     test(`${input} => ${tests[input]}`, () => {
-      expect(toLowerFirst(input)).toBe(tests[input]);
+      expect(stringUtils.toLowerFirst(input)).toBe(tests[input]);
     });
   }
+});
+
+describe('isUppercase', () => {
+  test('base', () => {
+    expect(stringUtils.isUppercase('a')).toBe(false);
+  });
+
+  test(UNDEFINED_INPUT, () => {
+    expect(stringUtils.isUppercase(undefined)).toBe(true);
+  });
 });
