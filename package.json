@@ -12,6 +12,7 @@
   "module": "dist/index.mjs",
   "types": "index.d.ts",
   "scripts": {
+    "prepublishOnly": "pnpm run build",
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs,esm",
     "test": "jest"
   },
