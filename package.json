@@ -14,7 +14,8 @@
   "scripts": {
     "prepublishOnly": "pnpm run build",
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs,esm",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@praburangki/eslint-config": "^1.0.0",
