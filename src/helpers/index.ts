@@ -37,3 +37,19 @@ export function convertToUnit(
     return `${Number(str)}${unit}`;
   }
 }
+
+export function humanReadableFileSize(bytes: number, base: 1000 | 1024 = 1000): string {
+  if (bytes < base) {
+    return `${bytes} B`;
+  }
+
+  const prefix = base === 1024 ? ['Ki', 'Mi', 'Gi'] : ['k', 'M', 'G'];
+  let unit = -1;
+
+  while (Math.abs(bytes) >= base && unit < prefix.length - 1) {
+    bytes /= base;
+    ++unit;
+  }
+
+  return `${bytes.toFixed(1)} ${prefix[unit]}B`;
+}
