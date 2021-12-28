@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-
+import { describe, expect, it } from 'vitest';
 import * as stringUtils from '.';
 
 const UNDEFINED_INPUT = 'undefined input';
@@ -17,7 +17,7 @@ describe('splitByCase', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input].join(', ')}`, () => {
+    it(`${input} => ${tests[input].join(', ')}`, () => {
       expect(stringUtils.splitByCase(input)).toMatchObject(tests[input]);
     });
   }
@@ -33,12 +33,12 @@ describe('pascalCase', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input]}`, () => {
+    it(`${input} => ${tests[input]}`, () => {
       expect(stringUtils.toPascalCase(input)).toBe(tests[input]);
     });
   }
 
-  test(UNDEFINED_INPUT, () => {
+  it(UNDEFINED_INPUT, () => {
     expect(stringUtils.toPascalCase(undefined)).toBe('');
   });
 });
@@ -49,12 +49,12 @@ describe('camelCase', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input]}`, () => {
+    it(`${input} => ${tests[input]}`, () => {
       expect(stringUtils.toCamelCase(input)).toBe(tests[input]);
     });
   }
 
-  test(UNDEFINED_INPUT, () => {
+  it(UNDEFINED_INPUT, () => {
     expect(stringUtils.toCamelCase(undefined)).toBe('');
   });
 });
@@ -70,12 +70,12 @@ describe('kebabCase', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input]}`, () => {
+    it(`${input} => ${tests[input]}`, () => {
       expect(stringUtils.toKebabCase(input)).toBe(tests[input]);
     });
   }
 
-  test(UNDEFINED_INPUT, () => {
+  it(UNDEFINED_INPUT, () => {
     expect(stringUtils.toKebabCase(undefined)).toBe('');
   });
 });
@@ -86,12 +86,12 @@ describe('snakeCase', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input]}`, () => {
+    it(`${input} => ${tests[input]}`, () => {
       expect(stringUtils.toSnakeCase(input)).toBe(tests[input]);
     });
   }
 
-  test(UNDEFINED_INPUT, () => {
+  it(UNDEFINED_INPUT, () => {
     expect(stringUtils.toSnakeCase(undefined)).toBe('');
   });
 });
@@ -104,7 +104,7 @@ describe('upperFirst', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input]}`, () => {
+    it(`${input} => ${tests[input]}`, () => {
       expect(stringUtils.toUpperFirst(input)).toBe(tests[input]);
     });
   }
@@ -118,18 +118,18 @@ describe('lowerFirst', () => {
   };
 
   for (const input in tests) {
-    test(`${input} => ${tests[input]}`, () => {
+    it(`${input} => ${tests[input]}`, () => {
       expect(stringUtils.toLowerFirst(input)).toBe(tests[input]);
     });
   }
 });
 
 describe('isUppercase', () => {
-  test('base', () => {
+  it('base', () => {
     expect(stringUtils.isUppercase('a')).toBe(false);
   });
 
-  test(UNDEFINED_INPUT, () => {
+  it(UNDEFINED_INPUT, () => {
     expect(stringUtils.isUppercase(undefined)).toBe(true);
   });
 });

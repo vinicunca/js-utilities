@@ -1,10 +1,12 @@
+import { describe, expect, it } from 'vitest';
+
 import * as arrayUtils from '.';
 
 describe('uniqArray', () => {
   const inputs: any[] = [1, 2, 3, 3, 3, 4];
   const expects: any[] = [1, 2, 3, 4];
 
-  test('uniqArray', () => {
+  it('uniqArray', () => {
     const uniqs = arrayUtils.uniqArray(inputs);
 
     expect(uniqs).toStrictEqual(expects);
@@ -14,13 +16,13 @@ describe('uniqArray', () => {
 describe('sum', () => {
   const inputs = [1, 2, 3, 4];
 
-  test('array of numbers', () => {
+  it('array of numbers', () => {
     const sums = arrayUtils.sum(inputs);
 
     expect(sums).toBe(10);
   });
 
-  test('array of objects', () => {
+  it('array of objects', () => {
     const _inputs = inputs.map((x) => ({
       age: x,
     }));
@@ -33,7 +35,7 @@ describe('sum', () => {
 describe('sortBy', () => {
   const _inputs = [{ age: 2 }, { age: 1 }, { age: 3 }];
 
-  test('sort by ASC', () => {
+  it('sort by ASC', () => {
     const _expects = [{ age: 1 }, { age: 2 }, { age: 3 }];
     const results = arrayUtils.sortBy({
       array: _inputs,
@@ -43,7 +45,7 @@ describe('sortBy', () => {
     expect(results).toStrictEqual(_expects);
   });
 
-  test('sort by DESC', () => {
+  it('sort by DESC', () => {
     const _expects = [{ age: 3 }, { age: 2 }, { age: 1 }];
     const results = arrayUtils.sortBy({
       array: _inputs,
