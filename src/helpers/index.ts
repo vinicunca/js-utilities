@@ -22,3 +22,18 @@ export function deepEqual(a: any, b: any): boolean {
 
   return _keys.every((p) => deepEqual(a[p], b[p]));
 }
+
+export function convertToUnit(
+  str: string | number | null | undefined,
+  unit = 'px'
+): string | undefined {
+  if (str == null || str === '') {
+    return undefined;
+  } else if (isNaN(+str!)) {
+    return String(str);
+  } else if (!isFinite(+str!)) {
+    return undefined;
+  } else {
+    return `${Number(str)}${unit}`;
+  }
+}

@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import * as helperUtils from '.';
+import { deepEqual, convertToUnit } from '.';
 
 describe('helpers', () => {
-  it('', () => {
-    const { deepEqual } = helperUtils;
+  it('deep equal comparison', () => {
     // Null
     expect(deepEqual(null, null)).toBe(true);
     expect(deepEqual(null, undefined)).toBe(false);
@@ -97,5 +96,25 @@ describe('helpers', () => {
     expect(deepEqual({ r: circular }, { r: circular })).toBe(true);
     expect(deepEqual({ r: circular, x: 1 }, { r: circular, x: 2 })).toBe(false);
     expect(deepEqual({ r: [circular] }, { r: [circular] })).toBe(true);
+  });
+
+  it('convert to css units', () => {
+    expect(convertToUnit(undefined)).toBeUndefined();
+    expect(convertToUnit(null)).toBeUndefined();
+    expect(convertToUnit('')).toBeUndefined();
+
+    expect(convertToUnit(0)).toBe('0px');
+    expect(convertToUnit(3)).toBe('3px');
+    expect(convertToUnit(3.14)).toBe('3.14px');
+
+    expect(convertToUnit(0, 'em')).toBe('0em');
+    expect(convertToUnit(3, 'em')).toBe('3em');
+    expect(convertToUnit(3.14, 'em')).toBe('3.14em');
+
+    expect(convertToUnit('0vw')).toBe('0vw');
+    expect(convertToUnit('3vw')).toBe('3vw');
+    expect(convertToUnit('3.14vw')).toBe('3.14vw');
+
+    expect(convertToUnit('ayo')).toBe('ayo');
   });
 });

@@ -14,11 +14,13 @@
   "scripts": {
     "prepublishOnly": "pnpm run build",
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs,esm",
-    "test": "vitest"
+    "test": "vitest",
+    "test:cov": "vitest --coverage"
   },
   "devDependencies": {
     "@praburangki/eslint-config": "^1.0.0",
     "@types/node": "^16.11.7",
+    "c8": "^7.10.0",
     "eslint": "^8.2.0",
     "eslint-define-config": "^1.1.4",
     "eslint-plugin-jest": "^25.2.4",
