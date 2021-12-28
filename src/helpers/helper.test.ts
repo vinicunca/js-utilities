@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { deepEqual, convertToUnit, humanReadableFileSize } from '.';
+import { deepEqual, convertToUnit, humanReadableFileSize, mergeDeep } from '.';
 
 describe('helpers', () => {
   it('deep equal comparison', () => {
@@ -145,5 +145,35 @@ describe('helpers', () => {
 
     expect(humanReadableFileSize(1000000000)).toBe('1.0 GB');
     expect(humanReadableFileSize(2000000000)).toBe('2.0 GB');
+  });
+});
+
+describe('mergeDeep', () => {
+  it('should include all properties from both source and target', () => {
+    expect(mergeDeep({ a: 'foo' }, { b: 'bar' })).toEqual({ a: 'foo', b: 'bar' });
+  });
+
+  it('should not mutate source object', () => {
+    const source = { a: 'foo' };
+    const target = { b: 'bar' };
+    const result = mergeDeep(source, target);
+
+    expect(result).not.toBe(source);
+    expect(source).not.toHaveProperty('b');
+  });
+
+  it('should overwrite source properties', () => {
+    expect(mergeDeep({ a: 'foo' }, { a: 'bar' })).toEqual({ a: 'bar' });
+  });
+
+  it('should recursively merge', () => {
+    expect(mergeDeep({ a: { b: 'foo' } }, { c: { d: 'bar' } })).toEqual({
+      a: { b: 'foo' },
+      c: { d: 'bar' },
+    });
+  });
+
+  it('should not recursively merge arrays', () => {
+    expect(mergeDeep({ a: ['foo'] }, { a: ['bar'] })).toEqual({ a: ['bar'] });
   });
 });
