@@ -31,7 +31,7 @@ export function convertToUnit(
 ): string | undefined {
   if (str == null || str === '') {
     return undefined;
-  } else if (isNaN(+str!)) {
+  } else if (Number.isNaN(+str!)) {
     return String(str);
   } else if (!isFinite(+str!)) {
     return undefined;
