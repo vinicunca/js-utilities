@@ -1,4 +1,13 @@
 /**
+ * Convert to an array
+ *
+ * @category Array
+ */
+export function toArray<T>(value: T | T[] = []): T[] {
+  return Array.isArray(value) ? value : [value]
+}
+
+/**
  * Removes duplicates in an array
  *
  * @category Array
