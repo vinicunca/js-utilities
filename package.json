@@ -1,7 +1,15 @@
 {
-  "name": "@praburangki/web-utilities",
+  "name": "@vinicunca/js-utilities",
   "version": "1.0.7",
-  "description": "Utility for web projects",
+  "description": "Utility for JavaScript",
+  "homepage": "https://github.com/vinicunca/js-utilities#readme",
+  "bugs": {
+    "url": "https://github.com/vinicunca/js-utilities/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinicunca/js-utilities.git"
+  },
   "license": "MIT",
   "author": "praburangki<https://github.com/praburangki>",
   "files": [
@@ -12,20 +20,18 @@
   "module": "dist/index.mjs",
   "types": "index.d.ts",
   "scripts": {
-    "prepublishOnly": "pnpm run build",
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs,esm",
     "test": "vitest",
-    "release": "bumpp package.json --commit --push --tag && pnpm publish",
+    "release": "bumpp package.json --commit --push --tag --commit 'chore: release v'",
     "test:cov": "vitest --coverage"
   },
   "devDependencies": {
-    "@praburangki/eslint-config": "1.0.3",
+    "@vinicunca/eslint-config": "latest",
     "@types/node": "^17.0.25",
     "bumpp": "^7.1.1",
     "c8": "^7.11.2",
     "eslint": "^8.13.0",
     "eslint-define-config": "^1.3.0",
-    "eslint-plugin-jest": "^26.1.4",
     "esno": "^0.14.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",

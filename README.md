@@ -2,11 +2,11 @@
 
 ## pnpm
 
-`pnpm add @praburangki/web-utilities`
+`pnpm add @vinicunca/js-utilities`
 
 ## npm
 
-`npm install @praburangki/web-utilities`
+`npm install @vinicunca/js-utilities`
 
 # Typings
 
@@ -16,7 +16,7 @@ To include global typings append this in your `tsconfig.json`:
 {
   "compilerOptions": {
     "types": [
-      "@praburangki/web-utilities"
+      "@vinicunca/js-utilities"
     ]
   }
 }
