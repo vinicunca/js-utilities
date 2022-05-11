@@ -42,3 +42,5 @@ export function isEmpty(value: any) {
 
   return !value || value == null;
 }
+
+export function NOOP(): void {}
