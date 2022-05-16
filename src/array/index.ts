@@ -4,7 +4,7 @@
  * @category Array
  */
 export function toArray<T>(value: T | T[] = []): T[] {
-  return Array.isArray(value) ? value : [value]
+  return Array.isArray(value) ? value : [value];
 }
 
 /**
@@ -30,7 +30,7 @@ export function uniqArray<TArray>(_array: readonly TArray[]): TArray[] {
  */
 export function sum<TArray>(
   _array: readonly TArray[],
-  callbackfn?: (value: TArray) => number
+  callbackfn?: (value: TArray) => number,
 ): number {
   return _array.reduce<number>((acc, curr: any) => {
     if (callbackfn) {

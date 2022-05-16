@@ -11,4 +11,12 @@ declare global {
   function parseInt(s: string | number, radix?: number): number;
 
   function parseFloat(string: string | number): number;
+
+  type Arrayable<T> = T | T[];
+
+  type Awaitable<T> = Promise<T> | T;
+
+  type HTMLElementCustomized<T> = HTMLElement & T;
+
+  type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 }

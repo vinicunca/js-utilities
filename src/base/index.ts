@@ -1,5 +1,7 @@
 export const isBrowser = typeof window !== 'undefined';
 
+export const isUndefined = (val: any): val is undefined => val === undefined;
+
 export const isUnset = (input: unknown): boolean => input == null;
 
 export const isSet = (input: unknown): boolean => !isUnset(input);
@@ -27,6 +29,10 @@ export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]';
 
 export function isEmpty(value: any) {
+  if (!value && value !== 0) {
+    return true;
+  }
+
   if (isObject(value)) {
     // eslint-disable-next-line no-unreachable-loop,no-restricted-syntax
     for (const _ in value) {
@@ -36,11 +42,21 @@ export function isEmpty(value: any) {
     return true;
   }
 
-  if (Array.isArray(value) && value.length === 0) {
-    return true;
+  return Array.isArray(value) && value.length === 0;
+}
+
+export const isElement = (el: unknown): el is Element => {
+  if (typeof Element === 'undefined') {
+    return false;
   }
 
-  return !value || value == null;
-}
+  return el instanceof Element;
+};
+
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+export const hasOwn = (
+  val: object,
+  key: string | symbol,
+): key is keyof typeof val => hasOwnProperty.call(val, key);
 
 export function NOOP(): void {}
