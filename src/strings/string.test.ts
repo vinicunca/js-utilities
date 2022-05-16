@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { describe, expect, it } from 'vitest';
+
 import * as stringUtils from '.';
 
 const UNDEFINED_INPUT = 'undefined input';

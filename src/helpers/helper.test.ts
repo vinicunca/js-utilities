@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { deepEqual, convertToUnit, humanReadableFileSize, mergeDeep } from '.';
+import { convertToUnit, deepEqual, humanReadableFileSize, mergeDeep } from '.';
 
 describe('helpers', () => {
   it('deep equal comparison', () => {

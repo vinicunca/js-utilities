@@ -27,7 +27,7 @@ export function deepEqual(a: any, b: any): boolean {
 
 export function convertToUnit(
   str: string | number | null | undefined,
-  unit = 'px'
+  unit = 'px',
 ): string | undefined {
   if (str == null || str === '') {
     return undefined;
