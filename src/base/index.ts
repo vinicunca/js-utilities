@@ -60,3 +60,7 @@ export const hasOwn = (
 ): key is keyof typeof val => hasOwnProperty.call(val, key);
 
 export function NOOP(): void {}
+
+export function mutable<T extends readonly any[] | Record<string, unknown>>(val: T) {
+  return val as Mutable<typeof val>;
+}
