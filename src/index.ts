@@ -3,4 +3,5 @@ export * from './array';
 export * from './base';
 export * from './guard';
 export * from './helpers';
+export * from './object';
 export * from './strings';
