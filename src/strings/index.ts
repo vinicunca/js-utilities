@@ -41,7 +41,7 @@ export function splitByCase(str: string, splitters = STR_SPLITTERS): string[] {
       // Case falling edge
       if (previusUpper === true && isUpper === false && buff.length > 1) {
         const lastChar = buff[buff.length - 1];
-        parts.push(buff.substr(0, buff.length - 1));
+        parts.push(buff.substring(0, buff.length - 1));
         buff = lastChar + char;
         previusUpper = isUpper;
         continue;
@@ -64,7 +64,7 @@ export function toUpperFirst(str: string): string {
     return '';
   }
 
-  return str[0].toUpperCase() + str.substr(1);
+  return str[0].toUpperCase() + str.substring(1);
 }
 
 export function toLowerFirst(str: string): string {
@@ -72,7 +72,7 @@ export function toLowerFirst(str: string): string {
     return '';
   }
 
-  return str[0].toLocaleLowerCase() + str.substr(1);
+  return str[0].toLocaleLowerCase() + str.substring(1);
 }
 
 export function toPascalCase(str: string | string[] = ''): string {
@@ -91,4 +91,11 @@ export function toKebabCase(str: string | string[] = '', joiner = '-'): string {
 
 export function toSnakeCase(str: string | string[] = '') {
   return toKebabCase(str, '_');
+}
+
+/**
+ * fork from {@link https://github.com/sindresorhus/escape-string-regexp}
+*/
+export function escapeStringRegexp(str = '') {
+  return str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
 }

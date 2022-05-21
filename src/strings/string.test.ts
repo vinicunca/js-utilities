@@ -5,7 +5,7 @@ import * as stringUtils from '.';
 
 const UNDEFINED_INPUT = 'undefined input';
 
-describe('splitByCase', () => {
+describe('Split by case', () => {
   const tests: any = {
     '': [],
     'foo': ['foo'],
@@ -24,7 +24,7 @@ describe('splitByCase', () => {
   }
 });
 
-describe('pascalCase', () => {
+describe('Pascal case', () => {
   const tests: any = {
     'foo': 'Foo',
     'foo-bAr': 'FooBAr',
@@ -44,7 +44,7 @@ describe('pascalCase', () => {
   });
 });
 
-describe('camelCase', () => {
+describe('Camel case', () => {
   const tests: any = {
     FooBarBaz: 'fooBarBaz',
   };
@@ -60,7 +60,7 @@ describe('camelCase', () => {
   });
 });
 
-describe('kebabCase', () => {
+describe('Kebab case', () => {
   const tests: any = {
     'foo': 'foo',
     'foo/Bar': 'foo-bar',
@@ -81,7 +81,7 @@ describe('kebabCase', () => {
   });
 });
 
-describe('snakeCase', () => {
+describe('Snake case', () => {
   const tests: any = {
     FooBarBaz: 'foo_bar_baz',
   };
@@ -97,7 +97,7 @@ describe('snakeCase', () => {
   });
 });
 
-describe('upperFirst', () => {
+describe('Upper first', () => {
   const tests: any = {
     '': '',
     'foo': 'Foo',
@@ -111,7 +111,7 @@ describe('upperFirst', () => {
   }
 });
 
-describe('lowerFirst', () => {
+describe('Lower first', () => {
   const tests: any = {
     '': '',
     'foo': 'foo',
@@ -125,12 +125,27 @@ describe('lowerFirst', () => {
   }
 });
 
-describe('isUppercase', () => {
+describe('Is uppercase', () => {
   it('base', () => {
     expect(stringUtils.isUppercase('a')).toBe(false);
   });
 
   it(UNDEFINED_INPUT, () => {
     expect(stringUtils.isUppercase(undefined)).toBe(true);
+  });
+});
+
+describe('Escape regexp', () => {
+  it('main', () => {
+    expect(stringUtils.escapeStringRegexp('\\ ^ $ * + ? . ( ) | { } [ ]')).toMatchInlineSnapshot(
+      '"\\\\\\\\ \\\\^ \\\\\$ \\\\* \\\\+ \\\\? \\\\. \\\\( \\\\) \\\\| \\\\{ \\\\} \\\\[ \\\\]"',
+    );
+    expect(stringUtils.escapeStringRegexp('**\\//aa^~#$')).toMatchInlineSnapshot(
+      '"\\\\*\\\\*\\\\\\\\//aa\\\\^~#\\\\$"',
+    );
+  });
+
+  it('escapes `-` in a way compatible with PCRE', () => {
+    expect(stringUtils.escapeStringRegexp('foo - bar')).toBe('foo \\x2d bar');
   });
 });
