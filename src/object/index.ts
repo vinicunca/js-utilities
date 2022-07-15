@@ -50,3 +50,7 @@ export function getProp<T = any>(obj: Dictionary<any>, path: Arrayable<string>, 
     },
   };
 }
+
+export function pickProps<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
+  return Object.assign({}, ...keys.map((key: K) => ({ [key]: object[key] })));
+}
