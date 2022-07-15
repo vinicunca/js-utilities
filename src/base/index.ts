@@ -4,7 +4,7 @@ export const isUndefined = (val: any): val is undefined => val === undefined;
 
 export const isDefined = <T = any>(val?: T): val is T => typeof val !== 'undefined';
 
-export const isUnset = (input: unknown): boolean => input == null;
+export const isUnset = (input: unknown): input is null | undefined => input == null;
 
 export const isSet = (input: unknown): boolean => !isUnset(input);
 
