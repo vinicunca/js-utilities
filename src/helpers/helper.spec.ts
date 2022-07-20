@@ -2,9 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { convertToUnit, deepEqual, humanReadableFileSize, mergeDeep } from '.';
 
-describe('helpers', () => {
-  it('deep equal comparison', () => {
-    // Null
+describe('deep equal comparison', () => {
+  it('handle nulls and undefineds', () => {
     expect(deepEqual(null, null)).toBe(true);
     expect(deepEqual(null, undefined)).toBe(false);
     expect(deepEqual(null, false)).toBe(false);
@@ -12,8 +11,7 @@ describe('helpers', () => {
     expect(deepEqual(null, '')).toBe(false);
     expect(deepEqual(null, [])).toBe(false);
     expect(deepEqual(null, {})).toBe(false);
-
-    // Undefined
+    expect(deepEqual([], null)).toBe(false);
     expect(deepEqual(undefined, undefined)).toBe(true);
     expect(deepEqual(undefined, null)).toBe(false);
     expect(deepEqual(undefined, false)).toBe(false);
@@ -21,8 +19,9 @@ describe('helpers', () => {
     expect(deepEqual(undefined, '')).toBe(false);
     expect(deepEqual(undefined, [])).toBe(false);
     expect(deepEqual(undefined, {})).toBe(false);
+  });
 
-    // Boolean
+  it('handle booleans', () => {
     expect(deepEqual(true, true)).toBe(true);
     expect(deepEqual(true, false)).toBe(false);
     expect(deepEqual(true, undefined)).toBe(false);
@@ -33,7 +32,6 @@ describe('helpers', () => {
     expect(deepEqual(true, 'abc')).toBe(false);
     expect(deepEqual(true, [1, 2])).toBe(false);
     expect(deepEqual(true, { x: 1 })).toBe(false);
-
     expect(deepEqual(false, false)).toBe(true);
     expect(deepEqual(false, true)).toBe(false);
     expect(deepEqual(false, undefined)).toBe(false);
@@ -44,8 +42,9 @@ describe('helpers', () => {
     expect(deepEqual(false, 'abc')).toBe(false);
     expect(deepEqual(false, [1, 2])).toBe(false);
     expect(deepEqual(false, { x: 1 })).toBe(false);
+  });
 
-    // Number
+  it('handle numbers', () => {
     expect(deepEqual(5, 5)).toBe(true);
     expect(deepEqual(8, 8.0)).toBe(true);
     expect(deepEqual(8, '8')).toBe(false);
@@ -55,8 +54,9 @@ describe('helpers', () => {
     expect(deepEqual(0, false)).toBe(false);
     expect(deepEqual(0, null)).toBe(false);
     expect(deepEqual(0, undefined)).toBe(false);
+  });
 
-    // String
+  it('handle strings', () => {
     expect(deepEqual('', '')).toBe(true);
     expect(deepEqual('a', 'a')).toBe(true);
     expect(deepEqual('a', 'b')).toBe(false);
@@ -64,30 +64,25 @@ describe('helpers', () => {
     expect(deepEqual('abc', 'abc')).toBe(true);
     expect(deepEqual('Abc', 'abc')).toBe(false);
     expect(deepEqual(' ', '')).toBe(false);
+  });
 
-    // Array
+  it('handle arrays', () => {
     expect(deepEqual([], [])).toBe(true);
     expect(deepEqual([1], [1.0])).toBe(true);
     expect(deepEqual([1, '2'], [1, '2'])).toBe(true);
     expect(deepEqual([1, { x: 1, y: 2 }], [1, { x: 1, y: 2 }])).toBe(true);
     expect(deepEqual([1, { x: 1, y: null }], [1, { x: 1, y: false }])).toBe(false);
     expect(deepEqual([1, [1, 2]], [1, [1, 2]])).toBe(true);
+  });
 
-    // Object
+  it('handle objects', () => {
     expect(deepEqual({}, {})).toBe(true);
     expect(deepEqual({ x: 1 }, { x: 1 })).toBe(true);
     expect(deepEqual({ x: 1 }, {})).toBe(false);
     expect(deepEqual({ x: { a: 1, b: 2 } }, { x: { a: 1, b: 2 } })).toBe(true);
+  });
 
-    // Date
-    const currentDate = new Date();
-    const futureDate = new Date(1000);
-
-    expect(deepEqual(currentDate, currentDate)).toBe(true);
-    expect(deepEqual({ date: currentDate }, { date: currentDate })).toBe(true);
-    expect(deepEqual(currentDate, futureDate)).toBe(false);
-    expect(deepEqual({ date: currentDate }, { date: futureDate })).toBe(false);
-
+  it('handle circular objects', () => {
     const circular = {
       me: null as any,
     };
@@ -98,6 +93,19 @@ describe('helpers', () => {
     expect(deepEqual({ r: [circular] }, { r: [circular] })).toBe(true);
   });
 
+  it('handle dates', () => {
+    // Date
+    const currentDate = new Date();
+    const futureDate = new Date(1000);
+
+    expect(deepEqual(currentDate, currentDate)).toBe(true);
+    expect(deepEqual({ date: currentDate }, { date: currentDate })).toBe(true);
+    expect(deepEqual(currentDate, futureDate)).toBe(false);
+    expect(deepEqual({ date: currentDate }, { date: futureDate })).toBe(false);
+  });
+});
+
+describe('helpers', () => {
   it('convert to css units', () => {
     expect(convertToUnit(undefined)).toBeUndefined();
     expect(convertToUnit(null)).toBeUndefined();

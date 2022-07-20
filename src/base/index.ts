@@ -21,7 +21,7 @@ export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isSymbol = (val: unknown): val is symbol => typeof val === 'symbol';
 
 export const isObject = (val: unknown): val is Record<any, any> =>
-  val !== null && typeof val === 'object' && !Array.isArray(val);
+  Object.prototype.toString.call(val) === '[object Object]';
 
 export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
   return isObject(val) && isFunction(val.then) && isFunction(val.catch);
@@ -31,17 +31,30 @@ export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]';
 
 export function isEmpty(value: any) {
-  if (!value && value !== 0) {
+  const _type = typeof value;
+  if (_type === 'number') {
+    return false;
+  }
+
+  if (value === undefined || value === null) {
     return true;
   }
 
+  if (_type === 'string') {
+    return value === '';
+  }
+
   if (isObject(value)) {
+    if (value === null) {
+      return true;
+    }
+
     // eslint-disable-next-line no-unreachable-loop,no-restricted-syntax
     for (const _ in value) {
       return false;
     }
 
-    return true;
+    return !(value instanceof RegExp || value instanceof Date);
   }
 
   return Array.isArray(value) && value.length === 0;
@@ -55,14 +68,8 @@ export const isElement = (el: unknown): el is Element => {
   return el instanceof Element;
 };
 
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-export const hasOwn = (
-  val: object,
-  key: string | symbol,
-): key is keyof typeof val => hasOwnProperty.call(val, key);
-
 export function NOOP(): void {}
 
-export function mutable<T extends readonly any[] | Record<string, unknown>>(val: T) {
+export function mutable<T extends readonly any[] | Dictionary<unknown>>(val: T) {
   return val as Mutable<typeof val>;
 }

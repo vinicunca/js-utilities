@@ -1,28 +1,37 @@
 import { isObject } from '../base';
 
-export function deepEqual(a: any, b: any): boolean {
-  if (a === b) {
+export function deepEqual(valA: any, valB: any): boolean {
+  if (valA === valB) {
     return true;
   }
 
-  // If the values are Date, compare them as timestamps
-  if (a instanceof Date && b instanceof Date && a.getTime() !== b.getTime()) {
-    return false;
+  if (typeof valB === 'object' && typeof valA === 'object') {
+    if (valA instanceof Map) {
+      return false;
+    }
+
+    if (valA instanceof Set) {
+      return false;
+    }
+
+    if (valA instanceof Date) {
+      return false;
+    }
+
+    if (valA === null || valB === null) {
+      return false;
+    }
+
+    if (Object.keys(valA).length !== Object.keys(valB).length) {
+      return false;
+    }
+
+    const _keys = Object.keys(valA);
+
+    return _keys.every((_key) => deepEqual(valA[_key], valB[_key]));
   }
 
-  // If the values aren't objects, they were already checked for equality
-  if (a !== Object(a) || b !== Object(b)) {
-    return false;
-  }
-
-  const _keys = Object.keys(a);
-
-  // Different number of properties
-  if (_keys.length !== Object.keys(b).length) {
-    return false;
-  }
-
-  return _keys.every((p) => deepEqual(a[p], b[p]));
+  return false;
 }
 
 export function convertToUnit(
@@ -56,8 +65,8 @@ export function humanReadableFileSize(bytes: number, base: 1000 | 1024 = 1000): 
   return `${bytes.toFixed(1)} ${prefix[unit]}B`;
 }
 
-export function mergeDeep(source: Record<string, any> = {}, target: Record<string, any> = {}) {
-  const out: Record<string, any> = {};
+export function mergeDeep(source: Dictionary<any> = {}, target: Dictionary<any> = {}) {
+  const out: Dictionary<any> = {};
 
   for (const key of Object.keys(source)) {
     out[key] = source[key];

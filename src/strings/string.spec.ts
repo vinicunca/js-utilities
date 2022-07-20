@@ -1,7 +1,19 @@
 /* eslint-disable no-restricted-syntax */
 import { describe, expect, it } from 'vitest';
 
-import * as stringUtils from '.';
+import {
+  escapeStringRegexp,
+  isUppercase,
+  removeEscapeCharacters,
+  slugify,
+  splitByCase,
+  toCamelCase,
+  toKebabCase,
+  toLowerFirst,
+  toPascalCase,
+  toSnakeCase,
+  toUpperFirst,
+} from '.';
 
 const UNDEFINED_INPUT = 'undefined input';
 
@@ -19,7 +31,7 @@ describe('Split by case', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input].join(', ')}`, () => {
-      expect(stringUtils.splitByCase(input)).toMatchObject(tests[input]);
+      expect(splitByCase(input)).toMatchObject(tests[input]);
     });
   }
 });
@@ -35,12 +47,12 @@ describe('Pascal case', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input]}`, () => {
-      expect(stringUtils.toPascalCase(input)).toBe(tests[input]);
+      expect(toPascalCase(input)).toBe(tests[input]);
     });
   }
 
   it(UNDEFINED_INPUT, () => {
-    expect(stringUtils.toPascalCase(undefined)).toBe('');
+    expect(toPascalCase(undefined)).toBe('');
   });
 });
 
@@ -51,12 +63,12 @@ describe('Camel case', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input]}`, () => {
-      expect(stringUtils.toCamelCase(input)).toBe(tests[input]);
+      expect(toCamelCase(input)).toBe(tests[input]);
     });
   }
 
   it(UNDEFINED_INPUT, () => {
-    expect(stringUtils.toCamelCase(undefined)).toBe('');
+    expect(toCamelCase(undefined)).toBe('');
   });
 });
 
@@ -72,12 +84,12 @@ describe('Kebab case', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input]}`, () => {
-      expect(stringUtils.toKebabCase(input)).toBe(tests[input]);
+      expect(toKebabCase(input)).toBe(tests[input]);
     });
   }
 
   it(UNDEFINED_INPUT, () => {
-    expect(stringUtils.toKebabCase(undefined)).toBe('');
+    expect(toKebabCase(undefined)).toBe('');
   });
 });
 
@@ -88,12 +100,12 @@ describe('Snake case', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input]}`, () => {
-      expect(stringUtils.toSnakeCase(input)).toBe(tests[input]);
+      expect(toSnakeCase(input)).toBe(tests[input]);
     });
   }
 
   it(UNDEFINED_INPUT, () => {
-    expect(stringUtils.toSnakeCase(undefined)).toBe('');
+    expect(toSnakeCase(undefined)).toBe('');
   });
 });
 
@@ -106,7 +118,7 @@ describe('Upper first', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input]}`, () => {
-      expect(stringUtils.toUpperFirst(input)).toBe(tests[input]);
+      expect(toUpperFirst(input)).toBe(tests[input]);
     });
   }
 });
@@ -120,32 +132,56 @@ describe('Lower first', () => {
 
   for (const input in tests) {
     it(`${input} => ${tests[input]}`, () => {
-      expect(stringUtils.toLowerFirst(input)).toBe(tests[input]);
+      expect(toLowerFirst(input)).toBe(tests[input]);
     });
   }
 });
 
 describe('Is uppercase', () => {
   it('base', () => {
-    expect(stringUtils.isUppercase('a')).toBe(false);
+    expect(isUppercase('a')).toBe(false);
   });
 
   it(UNDEFINED_INPUT, () => {
-    expect(stringUtils.isUppercase(undefined)).toBe(true);
+    expect(isUppercase(undefined)).toBe(true);
   });
 });
 
 describe('Escape regexp', () => {
   it('main', () => {
-    expect(stringUtils.escapeStringRegexp('\\ ^ $ * + ? . ( ) | { } [ ]')).toMatchInlineSnapshot(
+    expect(escapeStringRegexp('\\ ^ $ * + ? . ( ) | { } [ ]')).toMatchInlineSnapshot(
       '"\\\\\\\\ \\\\^ \\\\\$ \\\\* \\\\+ \\\\? \\\\. \\\\( \\\\) \\\\| \\\\{ \\\\} \\\\[ \\\\]"',
     );
-    expect(stringUtils.escapeStringRegexp('**\\//aa^~#$')).toMatchInlineSnapshot(
+    expect(escapeStringRegexp('**\\//aa^~#$')).toMatchInlineSnapshot(
       '"\\\\*\\\\*\\\\\\\\//aa\\\\^~#\\\\$"',
     );
   });
 
   it('escapes `-` in a way compatible with PCRE', () => {
-    expect(stringUtils.escapeStringRegexp('foo - bar')).toBe('foo \\x2d bar');
+    expect(escapeStringRegexp('foo - bar')).toBe('foo \\x2d bar');
   });
+});
+
+describe('Remove escape characters', () => {
+  it('performs no operation on non escaped strings', () => {
+    expect(removeEscapeCharacters('"Hello world"')).toBe('"Hello world"');
+    expect(removeEscapeCharacters('*P(*&)*&^%*&\'$GJHASDFHKJ')).toBe(
+      '*P(*&)*&^%*&\'$GJHASDFHKJ',
+    );
+  });
+  it('removes extra escape characters that are in the string literal', () => {
+    expect(removeEscapeCharacters('\\"Hello \\"world\\""')).toBe('"Hello "world""');
+  });
+  it('does not remove escape characters that are actually escaped', () => {
+    expect(removeEscapeCharacters('\\\\"Hello \\"world\\""')).toBe('\\"Hello "world""');
+  });
+});
+
+describe('slugify', () => {
+  it('removes caps', () => expect(slugify('FooBar')).toBe('foobar'));
+  it('removes spaces', () => expect(slugify('this That')).toBe('this-that'));
+  it('removes symbols', () =>
+    expect(slugify('This!-is*&%#@^up!')).toBe('this-is-up'));
+  it('converts non-standard unicode', () =>
+    expect(slugify('Woéédan')).toBe('woeedan'));
 });

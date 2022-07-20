@@ -99,3 +99,38 @@ export function toSnakeCase(str: string | string[] = '') {
 export function escapeStringRegexp(str = '') {
   return str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
 }
+
+/**
+ * Remove extra escape characters.
+ * @param str - A string to remove escape characters from.
+ */
+export function removeEscapeCharacters(str: string): string {
+  if (!str.length) {
+    return '';
+  }
+
+  let clean = '';
+  let lastChar = '';
+
+  for (let idx = 0; idx < str.length; idx++) {
+    const char = str.charAt(idx);
+    if (char !== '\\' || lastChar === '\\') {
+      clean += char;
+    }
+    lastChar = char;
+  }
+  return clean;
+}
+
+/**
+ * Turn any string into a URL/DOM safe string.
+ */
+export function slugify(str: string): string {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, ' ')
+    .trim()
+    .replace(/\s+/g, '-');
+}
