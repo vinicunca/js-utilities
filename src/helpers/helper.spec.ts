@@ -1,85 +1,85 @@
 import { describe, expect, it } from 'vitest';
 
-import { convertToUnit, deepEqual, humanReadableFileSize, mergeDeep } from '.';
+import { convertToUnit, humanReadableFileSize, isEqual, mergeDeep } from '.';
 
 describe('deep equal comparison', () => {
   it('handle nulls and undefineds', () => {
-    expect(deepEqual(null, null)).toBe(true);
-    expect(deepEqual(null, undefined)).toBe(false);
-    expect(deepEqual(null, false)).toBe(false);
-    expect(deepEqual(null, 0)).toBe(false);
-    expect(deepEqual(null, '')).toBe(false);
-    expect(deepEqual(null, [])).toBe(false);
-    expect(deepEqual(null, {})).toBe(false);
-    expect(deepEqual([], null)).toBe(false);
-    expect(deepEqual(undefined, undefined)).toBe(true);
-    expect(deepEqual(undefined, null)).toBe(false);
-    expect(deepEqual(undefined, false)).toBe(false);
-    expect(deepEqual(undefined, 0)).toBe(false);
-    expect(deepEqual(undefined, '')).toBe(false);
-    expect(deepEqual(undefined, [])).toBe(false);
-    expect(deepEqual(undefined, {})).toBe(false);
+    expect(isEqual(null, null)).toBe(true);
+    expect(isEqual(null, undefined)).toBe(false);
+    expect(isEqual(null, false)).toBe(false);
+    expect(isEqual(null, 0)).toBe(false);
+    expect(isEqual(null, '')).toBe(false);
+    expect(isEqual(null, [])).toBe(false);
+    expect(isEqual(null, {})).toBe(false);
+    expect(isEqual([], null)).toBe(false);
+    expect(isEqual(undefined, undefined)).toBe(true);
+    expect(isEqual(undefined, null)).toBe(false);
+    expect(isEqual(undefined, false)).toBe(false);
+    expect(isEqual(undefined, 0)).toBe(false);
+    expect(isEqual(undefined, '')).toBe(false);
+    expect(isEqual(undefined, [])).toBe(false);
+    expect(isEqual(undefined, {})).toBe(false);
   });
 
   it('handle booleans', () => {
-    expect(deepEqual(true, true)).toBe(true);
-    expect(deepEqual(true, false)).toBe(false);
-    expect(deepEqual(true, undefined)).toBe(false);
-    expect(deepEqual(true, null)).toBe(false);
-    expect(deepEqual(true, 0)).toBe(false);
-    expect(deepEqual(true, 1)).toBe(false);
-    expect(deepEqual(true, '')).toBe(false);
-    expect(deepEqual(true, 'abc')).toBe(false);
-    expect(deepEqual(true, [1, 2])).toBe(false);
-    expect(deepEqual(true, { x: 1 })).toBe(false);
-    expect(deepEqual(false, false)).toBe(true);
-    expect(deepEqual(false, true)).toBe(false);
-    expect(deepEqual(false, undefined)).toBe(false);
-    expect(deepEqual(false, null)).toBe(false);
-    expect(deepEqual(false, 0)).toBe(false);
-    expect(deepEqual(false, 1)).toBe(false);
-    expect(deepEqual(false, '')).toBe(false);
-    expect(deepEqual(false, 'abc')).toBe(false);
-    expect(deepEqual(false, [1, 2])).toBe(false);
-    expect(deepEqual(false, { x: 1 })).toBe(false);
+    expect(isEqual(true, true)).toBe(true);
+    expect(isEqual(true, false)).toBe(false);
+    expect(isEqual(true, undefined)).toBe(false);
+    expect(isEqual(true, null)).toBe(false);
+    expect(isEqual(true, 0)).toBe(false);
+    expect(isEqual(true, 1)).toBe(false);
+    expect(isEqual(true, '')).toBe(false);
+    expect(isEqual(true, 'abc')).toBe(false);
+    expect(isEqual(true, [1, 2])).toBe(false);
+    expect(isEqual(true, { x: 1 })).toBe(false);
+    expect(isEqual(false, false)).toBe(true);
+    expect(isEqual(false, true)).toBe(false);
+    expect(isEqual(false, undefined)).toBe(false);
+    expect(isEqual(false, null)).toBe(false);
+    expect(isEqual(false, 0)).toBe(false);
+    expect(isEqual(false, 1)).toBe(false);
+    expect(isEqual(false, '')).toBe(false);
+    expect(isEqual(false, 'abc')).toBe(false);
+    expect(isEqual(false, [1, 2])).toBe(false);
+    expect(isEqual(false, { x: 1 })).toBe(false);
   });
 
   it('handle numbers', () => {
-    expect(deepEqual(5, 5)).toBe(true);
-    expect(deepEqual(8, 8.0)).toBe(true);
-    expect(deepEqual(8, '8')).toBe(false);
-    expect(deepEqual(-10, -10)).toBe(true);
+    expect(isEqual(5, 5)).toBe(true);
+    expect(isEqual(8, 8.0)).toBe(true);
+    expect(isEqual(8, '8')).toBe(false);
+    expect(isEqual(-10, -10)).toBe(true);
 
-    expect(deepEqual(0, '')).toBe(false);
-    expect(deepEqual(0, false)).toBe(false);
-    expect(deepEqual(0, null)).toBe(false);
-    expect(deepEqual(0, undefined)).toBe(false);
+    expect(isEqual(0, '')).toBe(false);
+    expect(isEqual(0, false)).toBe(false);
+    expect(isEqual(0, null)).toBe(false);
+    expect(isEqual(0, undefined)).toBe(false);
   });
 
   it('handle strings', () => {
-    expect(deepEqual('', '')).toBe(true);
-    expect(deepEqual('a', 'a')).toBe(true);
-    expect(deepEqual('a', 'b')).toBe(false);
-    expect(deepEqual('a', 'A')).toBe(false);
-    expect(deepEqual('abc', 'abc')).toBe(true);
-    expect(deepEqual('Abc', 'abc')).toBe(false);
-    expect(deepEqual(' ', '')).toBe(false);
+    expect(isEqual('', '')).toBe(true);
+    expect(isEqual('a', 'a')).toBe(true);
+    expect(isEqual('a', 'b')).toBe(false);
+    expect(isEqual('a', 'A')).toBe(false);
+    expect(isEqual('abc', 'abc')).toBe(true);
+    expect(isEqual('Abc', 'abc')).toBe(false);
+    expect(isEqual(' ', '')).toBe(false);
   });
 
   it('handle arrays', () => {
-    expect(deepEqual([], [])).toBe(true);
-    expect(deepEqual([1], [1.0])).toBe(true);
-    expect(deepEqual([1, '2'], [1, '2'])).toBe(true);
-    expect(deepEqual([1, { x: 1, y: 2 }], [1, { x: 1, y: 2 }])).toBe(true);
-    expect(deepEqual([1, { x: 1, y: null }], [1, { x: 1, y: false }])).toBe(false);
-    expect(deepEqual([1, [1, 2]], [1, [1, 2]])).toBe(true);
+    expect(isEqual([], [])).toBe(true);
+    expect(isEqual([1], [1.0])).toBe(true);
+    expect(isEqual([1, '2'], [1, '2'])).toBe(true);
+    expect(isEqual([1, { x: 1, y: 2 }], [1, { x: 1, y: 2 }])).toBe(true);
+    expect(isEqual([1, { x: 1, y: null }], [1, { x: 1, y: false }])).toBe(false);
+    expect(isEqual([1, [1, 2]], [1, [1, 2]])).toBe(true);
   });
 
   it('handle objects', () => {
-    expect(deepEqual({}, {})).toBe(true);
-    expect(deepEqual({ x: 1 }, { x: 1 })).toBe(true);
-    expect(deepEqual({ x: 1 }, {})).toBe(false);
-    expect(deepEqual({ x: { a: 1, b: 2 } }, { x: { a: 1, b: 2 } })).toBe(true);
+    expect(isEqual({}, {})).toBe(true);
+    expect(isEqual({ x: 1 }, { x: 1 })).toBe(true);
+    expect(isEqual({ x: 1 }, {})).toBe(false);
+    expect(isEqual({ x: { a: 1, b: 2 } }, { x: { a: 1, b: 2 } })).toBe(true);
   });
 
   it('handle circular objects', () => {
@@ -88,9 +88,9 @@ describe('deep equal comparison', () => {
     };
     circular.me = circular;
 
-    expect(deepEqual({ r: circular }, { r: circular })).toBe(true);
-    expect(deepEqual({ r: circular, x: 1 }, { r: circular, x: 2 })).toBe(false);
-    expect(deepEqual({ r: [circular] }, { r: [circular] })).toBe(true);
+    expect(isEqual({ r: circular }, { r: circular })).toBe(true);
+    expect(isEqual({ r: circular, x: 1 }, { r: circular, x: 2 })).toBe(false);
+    expect(isEqual({ r: [circular] }, { r: [circular] })).toBe(true);
   });
 
   it('handle dates', () => {
@@ -98,10 +98,10 @@ describe('deep equal comparison', () => {
     const currentDate = new Date();
     const futureDate = new Date(1000);
 
-    expect(deepEqual(currentDate, currentDate)).toBe(true);
-    expect(deepEqual({ date: currentDate }, { date: currentDate })).toBe(true);
-    expect(deepEqual(currentDate, futureDate)).toBe(false);
-    expect(deepEqual({ date: currentDate }, { date: futureDate })).toBe(false);
+    expect(isEqual(currentDate, currentDate)).toBe(true);
+    expect(isEqual({ date: currentDate }, { date: currentDate })).toBe(true);
+    expect(isEqual(currentDate, futureDate)).toBe(false);
+    expect(isEqual({ date: currentDate }, { date: futureDate })).toBe(false);
   });
 });
 

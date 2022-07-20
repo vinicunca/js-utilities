@@ -1,6 +1,16 @@
 import { isObject } from '../base';
 
-export function deepEqual(valA: any, valB: any): boolean {
+interface ParamsIsEqual {
+  deep: boolean;
+  explicit: string[];
+}
+
+// eslint-disable-next-line sonarjs/cognitive-complexity
+export function isEqual(
+  valA: any,
+  valB: any,
+  options: ParamsIsEqual = {} as ParamsIsEqual,
+): boolean {
   if (valA === valB) {
     return true;
   }
@@ -26,9 +36,30 @@ export function deepEqual(valA: any, valB: any): boolean {
       return false;
     }
 
-    const _keys = Object.keys(valA);
+    const { explicit, deep } = options;
 
-    return _keys.every((_key) => deepEqual(valA[_key], valB[_key]));
+    for (const k of explicit) {
+      if ((k in valA || k in valB) && valA[k] !== valB[k]) {
+        return false;
+      }
+    }
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in valA) {
+      if (!(key in valB)) {
+        return false;
+      }
+
+      if (valA[key] !== valB[key] && !deep) {
+        return false;
+      }
+
+      if (deep && !isEqual(valA[key], valB[key], { deep, explicit })) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   return false;
