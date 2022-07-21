@@ -208,7 +208,7 @@ export function shallowClone<T>(
  * @param object - Object to clone
  * @param explicit - keys to explicitly clone
  */
-export function deepClone<T extends Record<string, unknown> | unknown[] | null>(
+export function deepClone<T extends Dictionary<unknown> | unknown[] | null>(
   object: T,
   explicit: string[] = [],
 ) {
@@ -241,7 +241,7 @@ export function deepClone<T extends Record<string, unknown> | unknown[] | null>(
       newObj[key] = _value;
 
       return newObj;
-    }, {} as Record<string, unknown>) as T;
+    }, {} as Dictionary<unknown>) as T;
   }
 
   for (const key of explicit) {

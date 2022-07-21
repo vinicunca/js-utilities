@@ -1,8 +1,8 @@
 import { isObject } from '../base';
 
 interface ParamsIsEqual {
-  deep: boolean;
-  explicit: string[];
+  deep?: boolean;
+  explicit?: string[];
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -36,7 +36,7 @@ export function isEqual(
       return false;
     }
 
-    const { explicit, deep } = options;
+    const { explicit = [], deep = false } = options;
 
     for (const k of explicit) {
       if ((k in valA || k in valB) && valA[k] !== valB[k]) {
